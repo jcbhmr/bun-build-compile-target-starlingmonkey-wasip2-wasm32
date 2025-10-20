@@ -1,0 +1,1 @@
+# bun-build-compile-target-starlingmonkey-wasip2-wasm32
