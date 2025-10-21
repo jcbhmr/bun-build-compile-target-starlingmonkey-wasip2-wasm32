@@ -3,17 +3,15 @@ import {
     build,
     file,
     fileURLToPath,
-    write,
     type BuildOutput,
     type CompileBuildConfig,
     type CompileBuildOptions,
     type NormalBuildConfig,
     type PathLike,
 } from "bun";
-import { componentize } from "@bytecodealliance/componentize-js";
 import { temporaryWriteTask } from "tempy";
-import { Readable } from "node:stream";
 import { basename } from "node:path";
+import process from "node:process";
 
 type Config = Omit<
     CompileBuildConfig,
@@ -119,7 +117,7 @@ export default async function bunBuildCompileTargetStarlingMonkeyWasiP2Wasm32(
             await temporaryWriteTask(
                 await entryPoint.text(),
                 async (temporaryPath) => {
-                    await $`node ${fileURLToPath(new URL("./cli.js", import.meta.resolve("@bytecodealliance/componentize-js")))} ${temporaryPath} --wit ${witPath} --out ${outFilePath}`;
+                    await $`${fileURLToPath(new URL("./bin/node" + (process.platform === "win32" ? ".exe" : ""), import.meta.resolve("node/package.json")))} ${fileURLToPath(new URL("./cli.js", import.meta.resolve("@bytecodealliance/componentize-js")))} ${temporaryPath} --wit ${witPath} --out ${outFilePath}`;
                 },
             );
         if (witPath != null) {
