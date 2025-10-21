@@ -60,7 +60,7 @@ world root {
         compile: {
             outfile: out.path,
             starlingmonkey: {
-                wit: wit.path,
+                witPath: wit.path,
             }
         }
     })

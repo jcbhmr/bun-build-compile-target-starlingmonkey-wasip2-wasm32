@@ -29,7 +29,8 @@ type Config = Omit<
     | (Omit<CompileBuildOptions, "target" | "windows"> & {
         target?: "starlingmonkey-wasip2-wasm32" | undefined;
         starlingmonkey?: {
-            wit?: PathLike;
+            witPath?: string;
+            witWorld?: string;
         };
     })
     | undefined;
@@ -85,26 +86,8 @@ export default async function bunBuildCompileTargetStarlingMonkeyWasiP2Wasm32(
             throw new Error("No entry point found in bundle Bun.build() output.");
         }
 
-        const witPath = (() => {
-            if (typeof options.compile === "string") {
-                return null;
-            }
-            const wit = options.compile?.starlingmonkey?.wit;
-            if (wit == null) {
-                return null;
-            }
-            if (typeof wit === "string") {
-                return wit;
-            } else if (wit instanceof URL) {
-                return fileURLToPath(wit);
-            } else if (ArrayBuffer.isView(wit) || wit instanceof ArrayBuffer) {
-                return new TextDecoder().decode(wit);
-            } else {
-                throw new TypeError(
-                    `Unknown type options.build.compile.starlingmonkey.wit: ${Object.prototype.toString.call(wit)}`,
-                );
-            }
-        })();
+        const witPath = typeof options.compile === "string" ? null : options.compile?.starlingmonkey?.witPath;
+        const witWorld = typeof options.compile === "string" ? null : options.compile?.starlingmonkey?.witWorld;
         const outFilePath = (() => {
             if (typeof options.compile !== "string") {
                 if (options.compile?.outfile != null) {
@@ -117,7 +100,7 @@ export default async function bunBuildCompileTargetStarlingMonkeyWasiP2Wasm32(
             await temporaryWriteTask(
                 await entryPoint.text(),
                 async (temporaryPath) => {
-                    await $`${fileURLToPath(new URL("./bin/node" + (process.platform === "win32" ? ".exe" : ""), import.meta.resolve("node/package.json")))} ${fileURLToPath(new URL("./cli.js", import.meta.resolve("@bytecodealliance/componentize-js")))} ${temporaryPath} --wit ${witPath} --out ${outFilePath}`;
+                    await $`${fileURLToPath(new URL("./bin/node" + (process.platform === "win32" ? ".exe" : ""), import.meta.resolve("node/package.json")))} ${fileURLToPath(new URL("./cli.js", import.meta.resolve("@bytecodealliance/componentize-js")))} ${temporaryPath} --wit ${witPath} ${witWorld != null ? ["--world-name", witWorld] : []} --out ${outFilePath}`;
                 },
             );
         if (witPath != null) {
