@@ -9,7 +9,8 @@
   "files": ["./dist/"],
   "scripts": {
     "check": "tsc",
-    "build": "bun ./build.ts"
+    "build": "bun ./build.ts",
+    "prepack": "bun run build"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
