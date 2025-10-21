@@ -10,6 +10,8 @@ bun add @jcbhmr/bun-build-compile-target-starlingmonkey-wasip2-wasm32
 
 ## Usage
 
+TODO
+
 ```sh
 bunx bun-build-compile-target-starlingmonkey-wasip2-wasm32 \
     ./index.ts \
@@ -22,7 +24,7 @@ const output = await bunBuildCompileTargetStarlingMonkeyWasiP2Wasm32({
     entrypoints: ['./index.ts'],
     compile: {
         starlingmonkey: {
-            wit: './wit/',
+            witPath: './wit/',
         },
         outfile: './app.wasm',
     },
