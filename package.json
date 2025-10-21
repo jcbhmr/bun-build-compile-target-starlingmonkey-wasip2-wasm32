@@ -1,0 +1,29 @@
+{
+  "name": "@jcbhmr/bun-build-compile-target-starlingmonkey-wasip2-wasm32",
+  "type": "module",
+  "exports": "./index.ts",
+  "bin": {
+    "bun-build-compile-target-starlingmonkey-wasip2-wasm32": "./main.ts"
+  },
+  "scripts": {
+    "build": "bun ./build.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/bun": "^1.3.0",
+    "@bytecodealliance/componentize-js": "^0.19.2",
+    "bun-plugin-dts": "^0.3.0",
+    "tempy": "^3.1.0"
+  },
+  "engines": {
+    "bun": "^1.3.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "bun",
+      "version": "^1.3.0"
+    }
+  }
+}
